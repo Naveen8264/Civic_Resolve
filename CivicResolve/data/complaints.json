@@ -342,5 +342,39 @@
         "note": "Complaint registered"
       }
     ]
+  },
+  {
+    "id": "60621b0c-0f5f-48fb-9502-5285dd1fc24c",
+    "referenceNumber": "CR-2026-000011",
+    "title": "road hole",
+    "description": "near krishna bakery",
+    "category": "Roads and Potholes",
+    "location": "rajpura",
+    "contact": "12345678",
+    "department": "Roads and Infrastructure",
+    "priority": "High",
+    "status": "Submitted",
+    "votes": [],
+    "images": [
+      {
+        "url": "/uploads/9add9a4f-3fa4-4e28-91e5-c06dc20e21a0.png",
+        "name": "Screenshot 2026-10-27 124925.png",
+        "size": 199998,
+        "contentType": "image/png"
+      }
+    ],
+    "createdAt": "2026-10-27T07:20:06.258Z",
+    "updatedAt": "2026-10-27T07:20:06.258Z",
+    "slaDeadline": "2026-10-30T07:20:06.258Z",
+    "resolvedAt": null,
+    "history": [
+      {
+        "from": null,
+        "to": "Submitted",
+        "at": "2026-10-27T07:20:06.258Z",
+        "by": "system",
+        "note": "Complaint registered"
+      }
+    ]
   }
 ]

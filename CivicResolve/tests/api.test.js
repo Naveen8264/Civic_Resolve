@@ -142,6 +142,34 @@ test('static serving and path traversal guard', async () => {
 test('oversized body -> 413', async () => {
   try { const r = await post({ ...good, description: 'x'.repeat(200000) }); assert.equal(r.status, 413); } catch (e) { assert.ok(e); }
 });
+test('photo uploads are stored as files and validated', async () => {
+  const makePng = (label) => new File([new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 10, 0, 0, 0, 10, 8, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 73, 69, 78, 68, 174, 66, 96, 130])], label + '.png', { type: 'image/png' });
+  const uploaded = new FormData();
+  uploaded.append('complaint', JSON.stringify({ ...good, title: 'Issue with photo attachment', description: 'A blocked drain near the school needs attention.' }));
+  uploaded.append('photos', makePng('first'));
+  const created = await fetch(base + '/api/complaints', { method: 'POST', headers: { cookie: RESIDENT.cookie }, body: uploaded });
+  assert.equal(created.status, 201);
+  const createdJson = await created.json();
+  assert.equal(createdJson.images.length, 1);
+  assert.match(createdJson.images[0].url, /^\/uploads\//);
+  const imageFetch = await fetch(base + createdJson.images[0].url);
+  assert.equal(imageFetch.status, 200);
+
+  const badType = new FormData();
+  badType.append('complaint', JSON.stringify(good));
+  badType.append('photos', new File(['not an image'], 'note.txt', { type: 'text/plain' }), 'note.txt');
+  assert.equal((await fetch(base + '/api/complaints', { method: 'POST', headers: { cookie: RESIDENT.cookie }, body: badType })).status, 400);
+
+  const oversized = new FormData();
+  oversized.append('complaint', JSON.stringify(good));
+  oversized.append('photos', new File([new Uint8Array(6 * 1024 * 1024).fill(1)], 'large.png', { type: 'image/png' }), 'large.png');
+  assert.equal((await fetch(base + '/api/complaints', { method: 'POST', headers: { cookie: RESIDENT.cookie }, body: oversized })).status, 413);
+
+  const tooMany = new FormData();
+  tooMany.append('complaint', JSON.stringify(good));
+  for (let i = 0; i < 4; i++) tooMany.append('photos', makePng(`many-${i}`), `many-${i}.png`);
+  assert.equal((await fetch(base + '/api/complaints', { method: 'POST', headers: { cookie: RESIDENT.cookie }, body: tooMany })).status, 400);
+});
 test('T10/T11 SLA calculation and overdue detection', () => {
   const c = { status: 'Submitted', slaDeadline: new Date(Date.now() + 3600000).toISOString() };
   assert.equal(service.sla(c).overdue, false);

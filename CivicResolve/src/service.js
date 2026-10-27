@@ -39,13 +39,14 @@ function view(c, now) {
 async function create(body) {
   const v = validate(body);
   const rule = cfg.CATEGORIES[v.category];
+  const images = Array.isArray(body.images) ? body.images.filter((image) => image && image.url) : [];
   const now = new Date();
   const c = await storage.update((list) => {
     const rec = {
       id: crypto.randomUUID(),
       referenceNumber: `CR-${now.getFullYear()}-${String(list.length + 1).padStart(6, '0')}`,
       ...v, department: rule.department, priority: rule.priority, status: 'Submitted',
-      votes: [],
+      votes: [], images,
       createdAt: now.toISOString(), updatedAt: now.toISOString(),
       slaDeadline: new Date(now.getTime() + rule.slaHours * 3600000).toISOString(), resolvedAt: null,
       history: [{ from: null, to: 'Submitted', at: now.toISOString(), by: 'system', note: 'Complaint registered' }]
