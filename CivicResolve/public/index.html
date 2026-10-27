@@ -93,6 +93,22 @@
           <label for="title">What's the issue? <span>*</span></label><input id="title" required maxlength="120" placeholder="e.g. Large pothole on Oak Street">
           <div class="form-two-col"><div><label for="category">Category <span>*</span></label><select id="category" required></select></div><div><label for="location">Where is it? <span>*</span></label><input id="location" required maxlength="200" placeholder="Street, landmark, or area"></div></div>
           <label for="description">Tell us more <span>*</span></label><textarea id="description" rows="5" required maxlength="1000" placeholder="Share details that could help the right team address this issue..."></textarea>
+
+          <div class="photo-upload-section">
+            <div class="photo-upload-header">
+              <label>Add photos (optional)</label>
+              <span class="photo-upload-hint">Add photos to help the department understand the issue.</span>
+            </div>
+            <div class="photo-actions">
+              <button class="button button-quiet photo-trigger" type="button" data-photo-target="file">📷 Upload photo</button>
+              <button class="button button-quiet photo-trigger" type="button" data-photo-target="camera">📸 Take photo</button>
+            </div>
+            <input id="photoInput" type="file" accept="image/jpeg,image/png,image/webp,image/*" multiple hidden>
+            <input id="cameraInput" type="file" accept="image/*" capture="environment" multiple hidden>
+            <div id="photoPreview" class="photo-preview" aria-live="polite"></div>
+            <div id="photoMsg" class="photo-message" role="status" aria-live="polite"></div>
+          </div>
+
           <label for="contact">Your contact <small>(optional, kept private)</small></label><input id="contact" maxlength="100" placeholder="Email or phone number">
           <div class="privacy-note"><span>⌑</span><span>Your contact details are private and never shown on the public issue feed.</span></div>
           <button class="button button-primary submit-button" type="submit">Submit community report <span aria-hidden="true">→</span></button>

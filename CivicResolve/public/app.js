@@ -3,8 +3,14 @@ let issueItems = [];
 let activeFilter = 'All';
 let currentUser = null;
 let authMode = 'login';
+const photoFiles = [];
+const MAX_PHOTOS = 3;
+const MAX_PHOTO_SIZE = 5 * 1024 * 1024;
+const ALLOWED_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
 async function api(path, opts = {}) {
-  const res = await fetch(path, { credentials: 'same-origin', ...opts, headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) } });
+  const headers = { ...(opts.headers || {}) };
+  if (!(opts.body instanceof FormData)) headers['Content-Type'] = headers['Content-Type'] || 'application/json';
+  const res = await fetch(path, { credentials: 'same-origin', ...opts, headers });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error([data.error || 'Request failed', ...(data.details || [])].join(': '));
   return data;
@@ -209,6 +215,88 @@ $('feedFilters').addEventListener('click', (event) => {
 $('feedSearch').addEventListener('input', renderFeed);
 $('feedSort').addEventListener('change', renderFeed);
 
+function showPhotoMessage(text, isError = false) {
+  const msg = $('photoMsg');
+  msg.textContent = text;
+  msg.className = isError ? 'photo-message error' : 'photo-message';
+}
+function resetPhotoSelection() {
+  photoFiles.length = 0;
+  $('photoInput').value = '';
+  $('cameraInput').value = '';
+  renderPhotoPreview();
+}
+function renderPhotoPreview() {
+  const preview = $('photoPreview');
+  preview.replaceChildren();
+  if (!photoFiles.length) {
+    preview.innerHTML = '<span class="photo-empty">No photos selected yet.</span>';
+    return;
+  }
+  for (const file of photoFiles) {
+    const item = document.createElement('div');
+    item.className = 'photo-thumb';
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(file);
+    img.alt = file.name;
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.className = 'photo-remove';
+    remove.textContent = '×';
+    remove.setAttribute('aria-label', `Remove ${file.name}`);
+    remove.addEventListener('click', () => {
+      const index = photoFiles.indexOf(file);
+      if (index >= 0) photoFiles.splice(index, 1);
+      renderPhotoPreview();
+    });
+    item.append(img, remove);
+    preview.appendChild(item);
+  }
+  const addMore = document.createElement('button');
+  addMore.type = 'button';
+  addMore.className = 'photo-add-more';
+  addMore.textContent = 'Add more photos';
+  addMore.addEventListener('click', () => $('photoInput').click());
+  preview.appendChild(addMore);
+}
+function handlePhotoSelection(files, source) {
+  const list = Array.from(files || []);
+  if (!list.length) return;
+  const errors = [];
+  const validFiles = [];
+  for (const file of list) {
+    const type = file.type || '';
+    const name = String(file.name || '').toLowerCase();
+    const isAccepted = ALLOWED_IMAGE_TYPES.has(type) || /\.(jpe?g|png|webp)$/i.test(name);
+    if (!isAccepted) errors.push(`${file.name || 'This file'} is not a supported image type.`);
+    else if (file.size > MAX_PHOTO_SIZE) errors.push(`${file.name || 'This file'} is larger than 5 MB.`);
+    else validFiles.push(file);
+  }
+  const total = photoFiles.length + validFiles.length;
+  if (total > MAX_PHOTOS) {
+    errors.push(`You can add up to ${MAX_PHOTOS} photos.`);
+  }
+  if (errors.length) {
+    showPhotoMessage(errors.join(' '), true);
+    return;
+  }
+  for (const file of validFiles) {
+    if (photoFiles.length >= MAX_PHOTOS) break;
+    photoFiles.push(file);
+  }
+  if (source === 'camera') $('cameraInput').value = '';
+  $('photoInput').value = '';
+  renderPhotoPreview();
+  showPhotoMessage(photoFiles.length ? `${photoFiles.length} photo${photoFiles.length > 1 ? 's' : ''} ready to submit.` : 'No photos selected yet.');
+}
+$('photoInput').addEventListener('change', (event) => handlePhotoSelection(event.target.files, 'upload'));
+$('cameraInput').addEventListener('change', (event) => handlePhotoSelection(event.target.files, 'camera'));
+document.querySelectorAll('[data-photo-target]').forEach((button) => button.addEventListener('click', () => {
+  const source = button.dataset.photoTarget;
+  const input = source === 'camera' ? $('cameraInput') : $('photoInput');
+  input.click();
+}));
+
 $('regForm').addEventListener('submit', async (event) => {
   event.preventDefault();
   const body = Object.fromEntries(['title', 'category', 'location', 'description', 'contact'].map((key) => [key, $(key).value]));
@@ -216,11 +304,15 @@ $('regForm').addEventListener('submit', async (event) => {
   message.textContent = 'Submitting your report...';
   message.className = 'form-message';
   try {
-    const complaint = await api('/api/complaints', { method: 'POST', body: JSON.stringify(body) });
+    const formData = new FormData();
+    formData.append('complaint', JSON.stringify(body));
+    for (const file of photoFiles) formData.append('photos', file, file.name);
+    const complaint = await api('/api/complaints', { method: 'POST', body: formData });
     message.className = 'form-message ok';
     message.replaceChildren(el('strong', `Report submitted — ${complaint.referenceNumber}`), el('p', `Routed to ${complaint.department}. You can track its progress from the Track a report page.`));
     $('refInput').value = complaint.referenceNumber;
     $('regForm').reset();
+    resetPhotoSelection();
     loadFeed();
   } catch (err) {
     message.textContent = err.message;
@@ -239,7 +331,24 @@ function renderTrack(complaint) {
   [['Department', complaint.department], ['Current status', complaint.status], ['Community support', `${complaint.voteCount} votes`], ['Submitted', when(complaint.createdAt)], ['SLA deadline', when(complaint.slaDeadline)], ['Response target', remaining(complaint.sla)]].forEach(([label, value]) => {
     const cell = el('div', undefined, 'detail-cell'); cell.append(el('small', label), el('strong', value)); details.append(cell);
   });
-  card.append(details, el('h3', 'Status history', 'timeline-title'));
+  card.append(details);
+  if (Array.isArray(complaint.images) && complaint.images.length) {
+    const photoWrap = el('div', undefined, 'complaint-photo-gallery');
+    complaint.images.forEach((image) => {
+      const imageLink = document.createElement('a');
+      imageLink.href = image.url;
+      imageLink.target = '_blank';
+      imageLink.rel = 'noopener noreferrer';
+      const img = new Image();
+      img.src = image.url;
+      img.alt = 'Attached complaint photo';
+      img.loading = 'lazy';
+      imageLink.appendChild(img);
+      photoWrap.appendChild(imageLink);
+    });
+    card.append(el('h3', 'Attached photos', 'timeline-title'), photoWrap);
+  }
+  card.append(el('h3', 'Status history', 'timeline-title'));
   const timeline = el('ol', undefined, 'timeline');
   [...complaint.history].reverse().forEach((entry) => {
     const row = el('li');
