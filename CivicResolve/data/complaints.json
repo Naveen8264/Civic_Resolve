@@ -1,0 +1,346 @@
+[
+  {
+    "id": "demo-complaint-001",
+    "referenceNumber": "CR-2026-000001",
+    "title": "Deep pothole on Maple Avenue",
+    "description": "A deep pothole has been growing near the school crossing. Drivers are swerving into the bike lane to avoid it.",
+    "category": "Roads and Potholes",
+    "location": "Maple Avenue & 3rd Street",
+    "contact": "",
+    "department": "Roads and Infrastructure",
+    "priority": "High",
+    "status": "In Progress",
+    "createdAt": "2026-10-24T09:20:00.000Z",
+    "updatedAt": "2026-10-25T15:30:00.000Z",
+    "slaDeadline": "2026-10-27T09:20:00.000Z",
+    "resolvedAt": null,
+    "votes": [
+      "seed-resident-001",
+      "seed-resident-002",
+      "seed-resident-003",
+      "seed-resident-004",
+      "seed-resident-005",
+      "seed-resident-006",
+      "seed-resident-007",
+      "seed-resident-008",
+      "seed-resident-009",
+      "seed-resident-010",
+      "seed-resident-011",
+      "seed-resident-012",
+      "a7943ad1-f639-46cf-b668-18ef6051ec27",
+      "063555cb-3d7e-4f42-80f1-9f3dcba1a8c4"
+    ],
+    "history": [
+      {
+        "from": null,
+        "to": "Submitted",
+        "at": "2026-10-24T09:20:00.000Z",
+        "by": "system",
+        "note": "Complaint registered"
+      },
+      {
+        "from": "Submitted",
+        "to": "Assigned",
+        "at": "2026-10-24T12:15:00.000Z",
+        "by": "demo-officer",
+        "note": "Assigned to the roads response team"
+      },
+      {
+        "from": "Assigned",
+        "to": "In Progress",
+        "at": "2026-10-25T15:30:00.000Z",
+        "by": "demo-officer",
+        "note": "Inspection scheduled"
+      }
+    ]
+  },
+  {
+    "id": "demo-complaint-002",
+    "referenceNumber": "CR-2026-000002",
+    "title": "Streetlight out by Riverside Park",
+    "description": "The lights along the west entrance have been out for several nights, making the footpath difficult to use after sunset.",
+    "category": "Streetlights",
+    "location": "Riverside Park, west entrance",
+    "contact": "",
+    "department": "Electrical Maintenance Department",
+    "priority": "Medium",
+    "status": "Submitted",
+    "createdAt": "2026-10-25T18:40:00.000Z",
+    "updatedAt": "2026-10-25T18:40:00.000Z",
+    "slaDeadline": "2026-10-28T18:40:00.000Z",
+    "resolvedAt": null,
+    "votes": [
+      "seed-resident-013",
+      "seed-resident-014",
+      "seed-resident-015",
+      "seed-resident-016",
+      "seed-resident-017",
+      "seed-resident-018",
+      "seed-resident-019",
+      "a7943ad1-f639-46cf-b668-18ef6051ec27"
+    ],
+    "history": [
+      {
+        "from": null,
+        "to": "Submitted",
+        "at": "2026-10-25T18:40:00.000Z",
+        "by": "system",
+        "note": "Complaint registered"
+      }
+    ]
+  },
+  {
+    "id": "demo-complaint-003",
+    "referenceNumber": "CR-2026-000003",
+    "title": "Water pressure dropping every morning",
+    "description": "Several homes on the block have very low water pressure between 6 and 8 AM. The issue started earlier this week.",
+    "category": "Water Supply",
+    "location": "Oak Street, blocks 4–6",
+    "contact": "",
+    "department": "Water Supply Department",
+    "priority": "High",
+    "status": "Assigned",
+    "createdAt": "2026-10-23T07:10:00.000Z",
+    "updatedAt": "2026-10-24T10:00:00.000Z",
+    "slaDeadline": "2026-10-24T07:10:00.000Z",
+    "resolvedAt": null,
+    "votes": [
+      "seed-resident-020",
+      "seed-resident-021",
+      "seed-resident-022",
+      "seed-resident-023",
+      "1c1c8b79-2a6b-4f01-bbf8-8c206dde63fd"
+    ],
+    "history": [
+      {
+        "from": null,
+        "to": "Submitted",
+        "at": "2026-10-23T07:10:00.000Z",
+        "by": "system",
+        "note": "Complaint registered"
+      },
+      {
+        "from": "Submitted",
+        "to": "Assigned",
+        "at": "2026-10-24T10:00:00.000Z",
+        "by": "demo-officer",
+        "note": "Field team notified"
+      }
+    ]
+  },
+  {
+    "id": "demo-complaint-004",
+    "referenceNumber": "CR-2026-000004",
+    "title": "Overflowing bins near the weekend market",
+    "description": "The public bins are full by midday on market days, and litter is being blown across the sidewalk.",
+    "category": "Garbage and Sanitation",
+    "location": "Cedar Square market entrance",
+    "contact": "",
+    "department": "Sanitation Department",
+    "priority": "Medium",
+    "status": "Submitted",
+    "createdAt": "2026-10-26T06:30:00.000Z",
+    "updatedAt": "2026-10-26T06:30:00.000Z",
+    "slaDeadline": "2026-10-28T06:30:00.000Z",
+    "resolvedAt": null,
+    "votes": [
+      "seed-resident-024",
+      "seed-resident-025"
+    ],
+    "history": [
+      {
+        "from": null,
+        "to": "Submitted",
+        "at": "2026-10-26T06:30:00.000Z",
+        "by": "system",
+        "note": "Complaint registered"
+      }
+    ]
+  },
+  {
+    "id": "demo-complaint-005",
+    "referenceNumber": "CR-2026-000005",
+    "title": "Drain cover missing at the bus stop",
+    "description": "A drain cover is missing beside the northbound bus stop. It is difficult to see at night and could be hazardous for pedestrians.",
+    "category": "Drainage",
+    "location": "Pine Road bus stop",
+    "contact": "",
+    "department": "Drainage Department",
+    "priority": "High",
+    "status": "Resolved",
+    "createdAt": "2026-10-19T11:45:00.000Z",
+    "updatedAt": "2026-10-22T14:10:00.000Z",
+    "slaDeadline": "2026-10-21T11:45:00.000Z",
+    "resolvedAt": "2026-10-22T14:10:00.000Z",
+    "votes": [
+      "seed-resident-026",
+      "seed-resident-027",
+      "seed-resident-028"
+    ],
+    "history": [
+      {
+        "from": null,
+        "to": "Submitted",
+        "at": "2026-10-19T11:45:00.000Z",
+        "by": "system",
+        "note": "Complaint registered"
+      },
+      {
+        "from": "Submitted",
+        "to": "Assigned",
+        "at": "2026-10-20T09:05:00.000Z",
+        "by": "demo-officer",
+        "note": "Safety team assigned"
+      },
+      {
+        "from": "Assigned",
+        "to": "In Progress",
+        "at": "2026-10-21T13:25:00.000Z",
+        "by": "demo-officer",
+        "note": "Replacement cover installed"
+      },
+      {
+        "from": "In Progress",
+        "to": "Resolved",
+        "at": "2026-10-22T14:10:00.000Z",
+        "by": "demo-officer",
+        "note": "Repair verified"
+      }
+    ]
+  },
+  {
+    "id": "ca354b4c-30a3-417d-af1e-c3be0b0784ea",
+    "referenceNumber": "CR-2026-000006",
+    "title": "road damage",
+    "description": "nfoablgisngion",
+    "category": "Roads and Potholes",
+    "location": "hello",
+    "contact": "ififfff",
+    "department": "Roads and Infrastructure",
+    "priority": "High",
+    "status": "Submitted",
+    "votes": [
+      "6dc1d152-3905-4583-a159-756b7df209c1",
+      "a7943ad1-f639-46cf-b668-18ef6051ec27"
+    ],
+    "createdAt": "2026-10-26T02:50:41.400Z",
+    "updatedAt": "2026-10-26T02:50:41.400Z",
+    "slaDeadline": "2026-10-29T02:50:41.400Z",
+    "resolvedAt": null,
+    "history": [
+      {
+        "from": null,
+        "to": "Submitted",
+        "at": "2026-10-26T02:50:41.400Z",
+        "by": "system",
+        "note": "Complaint registered"
+      }
+    ]
+  },
+  {
+    "id": "e9373833-488f-4dc8-991a-748d3fcc23ec",
+    "referenceNumber": "CR-2026-000007",
+    "title": "road issue",
+    "description": "oahfoaeohoef",
+    "category": "Roads and Potholes",
+    "location": "rajpura",
+    "contact": "8234567325205",
+    "department": "Roads and Infrastructure",
+    "priority": "High",
+    "status": "Submitted",
+    "votes": [
+      "a7943ad1-f639-46cf-b668-18ef6051ec27"
+    ],
+    "createdAt": "2026-10-26T04:05:50.538Z",
+    "updatedAt": "2026-10-26T04:05:50.538Z",
+    "slaDeadline": "2026-10-29T04:05:50.538Z",
+    "resolvedAt": null,
+    "history": [
+      {
+        "from": null,
+        "to": "Submitted",
+        "at": "2026-10-26T04:05:50.538Z",
+        "by": "system",
+        "note": "Complaint registered"
+      }
+    ]
+  },
+  {
+    "id": "286cb8f9-14fa-49e0-b697-2d27bb548517",
+    "referenceNumber": "CR-2026-000008",
+    "title": "road issue",
+    "description": "hoajghgoarp",
+    "category": "Roads and Potholes",
+    "location": "rajpura",
+    "contact": "8234567325205",
+    "department": "Roads and Infrastructure",
+    "priority": "High",
+    "status": "Submitted",
+    "votes": [],
+    "createdAt": "2026-10-26T04:44:05.497Z",
+    "updatedAt": "2026-10-26T04:44:05.497Z",
+    "slaDeadline": "2026-10-29T04:44:05.497Z",
+    "resolvedAt": null,
+    "history": [
+      {
+        "from": null,
+        "to": "Submitted",
+        "at": "2026-10-26T04:44:05.497Z",
+        "by": "system",
+        "note": "Complaint registered"
+      }
+    ]
+  },
+  {
+    "id": "0acd4d3d-e621-4ad6-ad1e-7794eba9dfb3",
+    "referenceNumber": "CR-2026-000009",
+    "title": "largw pothole",
+    "description": "large pothole",
+    "category": "Roads and Potholes",
+    "location": "rajpura",
+    "contact": "8234567325205",
+    "department": "Roads and Infrastructure",
+    "priority": "High",
+    "status": "Submitted",
+    "votes": [],
+    "createdAt": "2026-10-26T05:55:15.291Z",
+    "updatedAt": "2026-10-26T05:55:15.291Z",
+    "slaDeadline": "2026-10-29T05:55:15.291Z",
+    "resolvedAt": null,
+    "history": [
+      {
+        "from": null,
+        "to": "Submitted",
+        "at": "2026-10-26T05:55:15.291Z",
+        "by": "system",
+        "note": "Complaint registered"
+      }
+    ]
+  },
+  {
+    "id": "064e4f0c-d2e1-4f9a-8c44-b5f9f6eb58cb",
+    "referenceNumber": "CR-2026-000010",
+    "title": "kasdfjl",
+    "description": "hajkshdkfjhksahfk",
+    "category": "Water Supply",
+    "location": "rajpura",
+    "contact": "8234567325205",
+    "department": "Water Supply Department",
+    "priority": "High",
+    "status": "Submitted",
+    "votes": [],
+    "createdAt": "2026-10-26T09:19:01.563Z",
+    "updatedAt": "2026-10-26T09:19:01.563Z",
+    "slaDeadline": "2026-10-27T09:19:01.563Z",
+    "resolvedAt": null,
+    "history": [
+      {
+        "from": null,
+        "to": "Submitted",
+        "at": "2026-10-26T09:19:01.563Z",
+        "by": "system",
+        "note": "Complaint registered"
+      }
+    ]
+  }
+]

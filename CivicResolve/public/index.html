@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f6f8f7">
+<meta name="description" content="Raise local issues, support your neighbors, and follow community progress with CivicResolve.">
+<title>CivicResolve — Your neighborhood, heard.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" href="#" aria-label="CivicResolve home">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 3.5 27 9.8v12.4l-11 6.3-11-6.3V9.8L16 3.5Z"/><path d="M10 17.2l4 4 8-9"/></svg></span>
+      <span>Civic<span class="brand-light">Resolve</span></span>
+    </a>
+    <div class="workspace-label">YOUR COMMUNITY</div>
+    <nav class="side-nav" aria-label="Main navigation">
+      <button class="nav-item active" data-tab="feed"><span class="nav-icon">⌂</span> Community feed</button>
+      <button class="nav-item" data-tab="register"><span class="nav-icon">＋</span> Report an issue</button>
+      <button class="nav-item" data-tab="track"><span class="nav-icon">◷</span> Track a report</button>
+      <button class="nav-item" data-tab="dashboard" data-role="staff,admin" hidden><span class="nav-icon">▤</span> <span id="dashboardNavLabel">Staff dashboard</span></button>
+    </nav>
+    <div class="sidebar-spacer"></div>
+    <div class="sidebar-card">
+      <span class="sidebar-card-icon">✳</span>
+      <strong>Small actions.<br>Real neighborhood change.</strong>
+      <span>See an issue? Your voice helps move it forward.</span>
+      <button class="text-button" data-go="register">Make a report <span aria-hidden="true">→</span></button>
+    </div>
+    <div class="profile-row">
+      <span class="avatar" id="profileAvatar">CR</span>
+      <span class="profile-copy"><strong id="profileName">Community visitor</strong><small id="profileRole">Browse public issues</small></span>
+      <button class="profile-dots" id="signOutButton" type="button" hidden>Sign out</button>
+    </div>
+  </aside>
+
+  <main class="main-panel">
+    <header class="topbar">
+      <div class="breadcrumb"><span>Community</span><span class="crumb-slash">/</span><strong id="pageName">Community feed</strong></div>
+      <div class="topbar-actions">
+        <span class="live-indicator"><i></i> Community updates</span>
+        <div class="topbar-account"><button class="button button-quiet button-small" id="signInButton" type="button">Sign in</button><button class="button button-primary button-small" data-go="register"><span aria-hidden="true">＋</span> Report an issue</button></div>
+      </div>
+    </header>
+
+    <section id="feed" class="tab page-content">
+      <div class="welcome-row">
+        <div><div class="eyebrow"><span class="eyebrow-line"></span> CIVICRESOLVE COMMUNITY</div>
+          <h1>Your neighborhood,<br class="mobile-break"> <span>heard.</span></h1>
+          <p class="welcome-copy">Together, we can make our streets safer, cleaner, and better for everyone.</p>
+        </div>
+        <div class="hero-note"><span class="hero-note-icon">↗</span><span><strong>Community-powered</strong><small>Every voice makes a difference.</small></span></div>
+      </div>
+
+      <div class="impact-strip">
+        <div class="impact-item"><span class="impact-icon icon-teal">◎</span><span><strong id="statActive">—</strong><small>Open issues</small></span></div>
+        <div class="impact-item"><span class="impact-icon icon-lime">✓</span><span><strong id="statResolved">—</strong><small>Resolved</small></span></div>
+        <div class="impact-item"><span class="impact-icon icon-blue">♡</span><span><strong id="statVotes">—</strong><small>Community votes</small></span></div>
+        <div class="impact-message"><span class="pulse-dot"></span><span>Better together, one issue at a time.</span></div>
+      </div>
+
+      <div class="section-heading">
+        <div><div class="eyebrow">WHAT'S HAPPENING</div><h2>Issues near you</h2><p class="section-subtitle">Support the issues that matter. More votes help raise priority.</p></div>
+        <label class="search-box"><span aria-hidden="true">⌕</span><input id="feedSearch" type="search" placeholder="Search issues..." aria-label="Search issues"></label>
+      </div>
+      <div class="feed-toolbar">
+        <div class="filter-chips" id="feedFilters">
+          <button class="filter-chip selected" data-filter="All">All issues <span id="allCount">0</span></button>
+          <button class="filter-chip" data-filter="Roads and Potholes">Roads</button>
+          <button class="filter-chip" data-filter="Water Supply">Water</button>
+          <button class="filter-chip" data-filter="Garbage and Sanitation">Sanitation</button>
+          <button class="filter-chip" data-filter="Drainage">Drainage</button>
+          <button class="filter-chip" data-filter="Streetlights">Streetlights</button>
+        </div>
+        <label class="sort-control"><span>Sort:</span><select id="feedSort" aria-label="Sort issues"><option value="priority">Most supported</option><option value="recent">Most recent</option></select></label>
+      </div>
+      <div id="feedMsg" role="status" class="inline-message"></div>
+      <div id="issueGrid" class="issue-grid"></div>
+      <div id="emptyState" class="empty-state" hidden><span>◎</span><h3>No issues found</h3><p>Try another search or be the first to report an issue in your community.</p><button class="button button-primary" data-go="register">Report an issue</button></div>
+      <div class="feed-footer"><span>Made for neighbors, by neighbors.</span><span>Voting helps local teams understand what matters most.</span></div>
+    </section>
+
+    <section id="register" class="tab page-content" hidden>
+      <div class="page-intro"><div class="eyebrow">MAKE YOUR VOICE COUNT</div><h1>Report a local issue</h1><p>Give your community the details it needs to take action.</p></div>
+      <div class="form-layout">
+        <form id="regForm" class="form-card" novalidate>
+          <div class="form-card-heading"><span class="form-step">01</span><div><h2>Issue details</h2><p>Fields marked with * are required.</p></div></div>
+          <label for="title">What's the issue? <span>*</span></label><input id="title" required maxlength="120" placeholder="e.g. Large pothole on Oak Street">
+          <div class="form-two-col"><div><label for="category">Category <span>*</span></label><select id="category" required></select></div><div><label for="location">Where is it? <span>*</span></label><input id="location" required maxlength="200" placeholder="Street, landmark, or area"></div></div>
+          <label for="description">Tell us more <span>*</span></label><textarea id="description" rows="5" required maxlength="1000" placeholder="Share details that could help the right team address this issue..."></textarea>
+          <label for="contact">Your contact <small>(optional, kept private)</small></label><input id="contact" maxlength="100" placeholder="Email or phone number">
+          <div class="privacy-note"><span>⌑</span><span>Your contact details are private and never shown on the public issue feed.</span></div>
+          <button class="button button-primary submit-button" type="submit">Submit community report <span aria-hidden="true">→</span></button>
+          <div id="regMsg" role="status" class="form-message"></div>
+        </form>
+        <aside class="form-aside"><div class="aside-illustration" aria-hidden="true"><span class="illustration-sun"></span><span class="illustration-building building-one"></span><span class="illustration-building building-two"></span><span class="illustration-ground"></span><span class="illustration-plant">✳</span></div><h3>What happens next?</h3><ol><li><span>1</span><div><strong>We find the right team</strong><small>Your report is routed to the relevant department.</small></div></li><li><span>2</span><div><strong>Neighbors show support</strong><small>Community votes help highlight what matters.</small></div></li><li><span>3</span><div><strong>Follow the progress</strong><small>Use your report ID to see status updates.</small></div></li></ol><div class="aside-foot">Your community is better when everyone takes part.</div></aside>
+      </div>
+    </section>
+
+    <section id="track" class="tab page-content" hidden>
+      <div class="page-intro"><div class="eyebrow">STAY IN THE LOOP</div><h1>Track your report</h1><p>See the latest status and updates from your local team.</p></div>
+      <form id="trackForm" class="track-search"><label for="refInput">Your report ID</label><div><input id="refInput" placeholder="e.g. CR-2026-000001" required><button class="button button-primary" type="submit">Find report <span aria-hidden="true">→</span></button></div><small>Your ID was shown when you submitted your report.</small></form>
+      <div id="trackMsg" role="status" class="inline-message"></div><div id="trackResult"></div>
+    </section>
+
+    <section id="dashboard" class="tab page-content" hidden>
+      <div class="page-intro"><div class="eyebrow">CITY OPERATIONS</div><h1 id="dashboardHeading">Department dashboard</h1><p id="dashboardDescription">Monitor incoming reports and move community issues forward.</p><span class="demo-note">DEMO ACCESS · Staff and administrator accounts are for classroom demonstration.</span></div>
+      <div id="stats" class="stats"></div>
+      <div class="filters"><select id="fStatus" aria-label="Filter by status"></select><select id="fCategory" aria-label="Filter by category"></select><select id="fDept" aria-label="Filter by department"></select></div>
+      <div id="dashMsg" role="status" class="inline-message"></div>
+      <div class="table-card"><div class="table-title"><h2>All reports</h2><span>Sorted by newest</span></div><div class="scroll"><table><thead><tr><th>REPORT</th><th>ISSUE</th><th>DEPARTMENT</th><th>VOTES</th><th>PRIORITY</th><th>STATUS</th><th>SLA</th><th>ACTION</th></tr></thead><tbody id="rows"></tbody></table></div></div>
+      <section id="adminUsersPanel" class="admin-users" hidden>
+        <div class="table-title"><div><h2>Account management</h2><p>Create staff accounts and assign department access.</p></div><span>ADMIN ONLY</span></div>
+        <form id="staffForm" class="staff-form">
+          <div class="staff-field"><label for="staffName">Full name</label><input id="staffName" required minlength="2" maxlength="80" placeholder="Staff member name"></div>
+          <div class="staff-field"><label for="staffEmail">Email</label><input id="staffEmail" type="email" required placeholder="name@department.gov"></div>
+          <div class="staff-field"><label for="staffPassword">Temporary password</label><input id="staffPassword" type="password" required minlength="10" maxlength="128" placeholder="At least 10 characters"></div>
+          <div class="staff-field"><label for="staffRole">Role</label><select id="staffRole"><option value="staff">Staff</option><option value="admin">Administrator</option></select></div>
+          <div class="staff-field"><label for="staffDepartment">Department</label><select id="staffDepartment"></select></div>
+          <button class="button button-primary" type="submit">Create account</button>
+        </form>
+        <div id="adminMsg" role="status" class="inline-message"></div>
+        <div id="userList" class="user-list"></div>
+      </section>
+    </section>
+    <footer class="site-footer"><span>© CivicResolve <span id="footerYear"></span></span><span>A community-powered local issue platform</span></footer>
+  </main>
+</div>
+<dialog id="authDialog" class="auth-dialog">
+  <button id="closeAuth" class="dialog-close" type="button" aria-label="Close">×</button>
+  <div class="auth-brand"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 3.5 27 9.8v12.4l-11 6.3-11-6.3V9.8L16 3.5Z"/><path d="m10 17.2 4 4 8-9"/></svg></span><span>Civic<span class="brand-light">Resolve</span></span></div>
+  <div class="auth-tabs"><button class="auth-tab active" data-auth-mode="login" type="button">Sign in</button><button class="auth-tab" data-auth-mode="register" type="button">Create resident account</button></div>
+  <form id="loginForm" class="auth-form">
+    <h2 id="authHeading">Welcome back</h2><p id="authDescription">Sign in to participate in your community.</p>
+    <label for="authEmail">Email address</label><input id="authEmail" type="email" autocomplete="username" required>
+    <label for="authPassword">Password</label><input id="authPassword" type="password" autocomplete="current-password" minlength="10" required>
+    <label id="authNameLabel" for="authName" hidden>Your name</label><input id="authName" autocomplete="name" hidden>
+    <button id="authSubmit" class="button button-primary auth-submit" type="submit">Sign in</button>
+    <div id="authMsg" role="status" class="inline-message"></div>
+  </form>
+  <div id="demoAccess" class="demo-access"><strong>Classroom demo accounts</strong><span>Resident: resident@civicresolve.local · ResidentDemo#2026</span><span>Roads staff: staff@civicresolve.local · StaffDemo#2026</span><span>Administrator: admin@civicresolve.local · AdminDemo#2026</span><small>For classroom demos only. Change the default credentials before deployment.</small></div>
+</dialog>
+<script src="/app.js"></script>
+</body>
+</html>

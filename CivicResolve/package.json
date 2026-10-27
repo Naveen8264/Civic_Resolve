@@ -1,0 +1,9 @@
+{
+  "name": "civicresolve",
+  "version": "0.1.0",
+  "description": "CivicResolve prototype: community issue reporting, voting, resident accounts and role-based staff/admin dashboards",
+  "main": "server.js",
+  "scripts": { "start": "node server.js", "test": "node --test tests/api.test.js" },
+  "license": "UNLICENSED",
+  "engines": { "node": ">=18" }
+}

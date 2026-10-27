@@ -1,0 +1,52 @@
+[
+  {
+    "id": "3fd1ff5d-7a92-4408-9cfa-6f5955f0a59a",
+    "name": "CivicResolve Administrator",
+    "email": "admin@civicresolve.local",
+    "salt": "20ae5609527f6ad6e3f08268860a8cde",
+    "passwordHash": "5747931fd718e1076a93147011f14d2d05b7a8903435634d9c47b4a8f20f680a52366f5c2083a6cf0b15847cf5cf48927c1151b0afbf666aa832479eb03e03bc",
+    "role": "admin",
+    "department": null,
+    "createdAt": "2026-10-26T03:57:58.216Z"
+  },
+  {
+    "id": "88102ca2-798a-4256-8ca5-53adeab6934e",
+    "name": "Roads Department Staff",
+    "email": "staff@civicresolve.local",
+    "salt": "4ebf1b91fc7046bd4119de286cb3298e",
+    "passwordHash": "048b19521ae85d1bac0171e1c10c453ffdb80c03a33f7d3b634073db7b957c2b5237375cc4c826754a982726ff14d20e546da1543398f4f6aebc13f2f2b17df3",
+    "role": "staff",
+    "department": "Roads and Infrastructure",
+    "createdAt": "2026-10-26T03:57:58.262Z"
+  },
+  {
+    "id": "1c1c8b79-2a6b-4f01-bbf8-8c206dde63fd",
+    "name": "CivicResolve Resident",
+    "email": "resident@civicresolve.local",
+    "salt": "90ccdb0f4dcc082d60bd0264618ad04d",
+    "passwordHash": "861079327c6f788513d6903ee51fe67c4d5b439c2281a5b5dec1c1e4a948249bc161ae9c5a75923bed6b611dcdd0e4e65bfafd8bb2e7655d7cf81c8f5ea277b6",
+    "role": "resident",
+    "department": null,
+    "createdAt": "2026-10-26T04:00:31.404Z"
+  },
+  {
+    "id": "a7943ad1-f639-46cf-b668-18ef6051ec27",
+    "name": "Naveen Yadav",
+    "email": "naveen0471.becse24@chitkara.edu.in",
+    "salt": "d1bf314073577004efd645683028d9b2",
+    "passwordHash": "cfad4d44e6ecb0ff1ec6f77bf1bc7ea02d3244adce809ab4568063820f321fdd93886dadb5e25fe20d8b822385ef38c4282ba8e8eb11196f03d2e89d94613c74",
+    "role": "resident",
+    "department": null,
+    "createdAt": "2026-10-26T04:04:57.270Z"
+  },
+  {
+    "id": "063555cb-3d7e-4f42-80f1-9f3dcba1a8c4",
+    "name": "Naveen Yadav",
+    "email": "itzznaveen04@gmail.com",
+    "salt": "c97426134567e340d08c2bcdb27e3773",
+    "passwordHash": "b09d057b8052c910dada92f1a64fc29a61d29e2ac3b848f9db4a882a2d2876564a14f9c7c24280f5ffd573f219f43b3028caeda402ad5cf8fa54b5f86f699e2a",
+    "role": "resident",
+    "department": null,
+    "createdAt": "2026-10-26T04:43:13.004Z"
+  }
+]
