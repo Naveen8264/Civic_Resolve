@@ -9,3 +9,14 @@
 [hidden]{display:none!important}
 @media(max-width:560px){.main-panel,.page-content{min-width:0}.issue-grid{width:100%;min-width:0}.issue-card{min-width:0}.filter-chips{width:100%;max-width:100%;min-width:0;overflow-x:auto}.issue-topline{flex-wrap:wrap}.issue-meta{flex-wrap:wrap}.issue-meta .department{flex:1 1 100%;max-width:100%;margin-left:0}.card-bottom{flex-wrap:wrap}.support-copy{flex:1 1 70px}.issue-reference{order:3;flex:1 1 100%}}
 @media(max-width:560px){.welcome-row h1{font-size:clamp(27px,7.5vw,34px)}}
+.issue-photo-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,88px));gap:8px;margin-top:12px}
+.issue-photo-thumb{display:block;width:100%;aspect-ratio:4/3;padding:0;overflow:hidden;border:1px solid var(--line);border-radius:7px;background:#f3f6f4}
+.issue-photo-thumb:hover{border-color:#9fc8b3}
+.issue-photo-thumb img{display:block;width:100%;height:100%;object-fit:cover;visibility:hidden}
+.issue-photo-thumb img.loaded{visibility:visible}
+.photo-lightbox{position:relative;max-width:94vw;max-height:94vh;padding:0;overflow:visible;border:0;border-radius:10px;background:transparent}
+.photo-lightbox::backdrop{background:rgba(17,35,30,.82)}
+.photo-lightbox>img{display:block;max-width:92vw;max-height:85vh;width:auto;height:auto;object-fit:contain;border-radius:10px;background:#fff;visibility:hidden}
+.photo-lightbox>img.loaded{visibility:visible}
+.photo-lightbox-close{position:absolute;z-index:1;top:-14px;right:-14px;width:34px;height:34px;padding:0;border:1px solid #dfe8e4;border-radius:50%;background:#fff;color:var(--ink);font-size:24px;line-height:1}
+@media(max-width:560px){.issue-photo-gallery{grid-template-columns:repeat(3,minmax(0,1fr))}.photo-lightbox-close{top:8px;right:8px}}

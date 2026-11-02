@@ -173,6 +173,8 @@ function renderIssue(issue) {
   topline.firstChild.append(el('i', undefined, 'category-dot'), document.createTextNode(issue.category));
   topline.append(el('span', issue.priority, `priority-tag priority-${issue.priority.toLowerCase()}`));
   card.append(topline, el('h3', issue.title), el('p', issue.description, 'issue-description'));
+  const photoGallery = renderIssuePhotos(issue);
+  if (photoGallery) card.append(photoGallery);
   const meta = el('div', undefined, 'issue-meta');
   meta.append(el('span', `⌖ ${issue.location}`), el('span', `◷ ${new Date(issue.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}`));
   meta.append(el('span', issue.department, 'department'));
@@ -192,6 +194,58 @@ function renderIssue(issue) {
   card.append(bottom);
   return card;
 }
+function renderIssuePhotos(issue) {
+  if (!Array.isArray(issue.images)) return null;
+  const images = issue.images.map((image) => {
+    if (!image || typeof image.url !== 'string') return null;
+    try {
+      const url = new URL(image.url, window.location.origin);
+      return url.origin === window.location.origin && /^\/uploads\/[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}\.(?:jpg|png|webp)$/i.test(url.pathname)
+        ? url.pathname
+        : null;
+    } catch {
+      return null;
+    }
+  }).filter(Boolean);
+  if (!images.length) return null;
+
+  const gallery = el('div', undefined, 'issue-photo-gallery');
+  images.forEach((url, index) => {
+    const thumbnail = el('button', undefined, 'issue-photo-thumb');
+    thumbnail.type = 'button';
+    thumbnail.setAttribute('aria-label', `View photo ${index + 1} for ${issue.title}`);
+    const image = el('img');
+    image.src = url;
+    image.alt = `Photo ${index + 1} attached to ${issue.title}`;
+    image.loading = 'lazy';
+    image.addEventListener('load', () => image.classList.add('loaded'), { once: true });
+    image.addEventListener('error', () => {
+      thumbnail.remove();
+      if (!gallery.childElementCount) gallery.remove();
+    }, { once: true });
+    thumbnail.addEventListener('click', () => openPhotoPreview(url, image.alt));
+    thumbnail.append(image);
+    gallery.append(thumbnail);
+  });
+  return gallery;
+}
+function openPhotoPreview(url, alt) {
+  const dialog = $('photoDialog');
+  const image = $('photoPreviewImage');
+  image.classList.remove('loaded');
+  image.src = url;
+  image.alt = alt;
+  dialog.showModal();
+}
+$('closePhotoPreview').addEventListener('click', () => $('photoDialog').close());
+$('photoDialog').addEventListener('click', (event) => {
+  if (event.target === $('photoDialog')) $('photoDialog').close();
+});
+$('photoPreviewImage').addEventListener('load', (event) => event.target.classList.add('loaded'));
+$('photoPreviewImage').addEventListener('error', () => {
+  if ($('photoDialog').open) $('photoDialog').close();
+});
+$('photoDialog').addEventListener('close', () => $('photoPreviewImage').removeAttribute('src'));
 async function castVote(ref, button) {
   button.disabled = true;
   try {
