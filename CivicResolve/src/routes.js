@@ -127,7 +127,9 @@ async function readBody(req) {
 
   try {
     const v = JSON.parse(text);
-    return v && typeof v === 'object' ? v : {};
+    if (!v || typeof v !== 'object' || Array.isArray(v)) return {};
+    delete v.images;
+    return v;
   } catch {
     throw new AppError(400, 'Invalid JSON');
   }

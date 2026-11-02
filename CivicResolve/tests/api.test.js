@@ -8,7 +8,7 @@ const storage = require('../src/storage');
 const auth = require('../src/auth');
 const service = require('../src/service');
 const { createServer } = require('../server');
-let server, base, RESIDENT, STAFF, ADMIN;
+let server, base, RESIDENT, STAFF, ADMIN, photoPersistence;
 const H = { 'Content-Type': 'application/json' };
 const good = { title: 'Large pothole near main market', description: 'Deep pothole on the main road.', category: 'Roads and Potholes', location: 'Main Market Road', contact: 'x@example.com' };
 const post = (b, session = RESIDENT) => fetch(base + '/api/complaints', { method: 'POST', headers: { ...H, ...session }, body: typeof b === 'string' ? b : JSON.stringify(b) });
@@ -152,8 +152,53 @@ test('photo uploads are stored as files and validated', async () => {
   const createdJson = await created.json();
   assert.equal(createdJson.images.length, 1);
   assert.match(createdJson.images[0].url, /^\/uploads\//);
+  assert.deepEqual(Object.keys(createdJson.images[0]), ['url']);
   const imageFetch = await fetch(base + createdJson.images[0].url);
   assert.equal(imageFetch.status, 200);
+
+  const multiple = new FormData();
+  multiple.append('complaint', JSON.stringify({ ...good, title: 'Multiple photos attached', description: 'Two photos show the blocked drain clearly.' }));
+  multiple.append('photos', makePng('second'));
+  multiple.append('photos', makePng('third'));
+  const multipleResponse = await fetch(base + '/api/complaints', { method: 'POST', headers: { cookie: RESIDENT.cookie }, body: multiple });
+  assert.equal(multipleResponse.status, 201);
+  const multipleJson = await multipleResponse.json();
+  assert.equal(multipleJson.images.length, 2);
+
+  const withoutPhotos = await (await post({ ...good, title: 'Report without photos' })).json();
+  assert.deepEqual(withoutPhotos.images, []);
+  const forgedImages = await (await post({
+    ...good,
+    title: 'Ignore supplied photo URLs',
+    images: [{ url: 'https://example.com/private.jpg' }, { url: '/uploads/not-an-upload.jpg' }]
+  })).json();
+  assert.deepEqual(forgedImages.images, []);
+
+  const legacyReference = 'CR-2099-999999';
+  await storage.update((all) => all.push({
+    ...good,
+    referenceNumber: legacyReference,
+    department: 'Roads and Infrastructure',
+    status: 'Submitted',
+    votes: [],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    slaDeadline: new Date(Date.now() + 3600000).toISOString(),
+    resolvedAt: null,
+    history: []
+  }));
+  const feed = await (await fetch(base + '/api/complaints/feed')).json();
+  const feedByReference = new Map(feed.items.map((item) => [item.referenceNumber, item]));
+  assert.deepEqual(feedByReference.get(createdJson.referenceNumber).images, createdJson.images);
+  assert.deepEqual(feedByReference.get(multipleJson.referenceNumber).images, multipleJson.images);
+  assert.deepEqual(feedByReference.get(withoutPhotos.referenceNumber).images, []);
+  assert.deepEqual(feedByReference.get(legacyReference).images, []);
+  assert.equal(feedByReference.get(createdJson.referenceNumber).contact, undefined);
+  assert.equal((await fetch(base + '/api/complaints/' + createdJson.referenceNumber)).status, 200);
+  photoPersistence = {
+    referenceNumber: createdJson.referenceNumber,
+    urls: createdJson.images.map((image) => image.url)
+  };
 
   const badType = new FormData();
   badType.append('complaint', JSON.stringify(good));
@@ -169,6 +214,23 @@ test('photo uploads are stored as files and validated', async () => {
   tooMany.append('complaint', JSON.stringify(good));
   for (let i = 0; i < 4; i++) tooMany.append('photos', makePng(`many-${i}`), `many-${i}.png`);
   assert.equal((await fetch(base + '/api/complaints', { method: 'POST', headers: { cookie: RESIDENT.cookie }, body: tooMany })).status, 400);
+});
+test('uploaded photos remain available after a server restart', async () => {
+  const previousServer = server;
+  await new Promise((resolve, reject) => {
+    previousServer.close((error) => error ? reject(error) : resolve());
+    previousServer.closeAllConnections();
+  });
+  await storage.init();
+  await auth.init();
+  server = createServer();
+  await new Promise((resolve) => server.listen(0, resolve));
+  base = 'http://localhost:' + server.address().port;
+
+  const feed = await (await fetch(base + '/api/complaints/feed')).json();
+  const issue = feed.items.find((item) => item.referenceNumber === photoPersistence.referenceNumber);
+  assert.deepEqual(issue.images.map((image) => image.url), photoPersistence.urls);
+  for (const url of photoPersistence.urls) assert.equal((await fetch(base + url)).status, 200);
 });
 test('T10/T11 SLA calculation and overdue detection', () => {
   const c = { status: 'Submitted', slaDeadline: new Date(Date.now() + 3600000).toISOString() };

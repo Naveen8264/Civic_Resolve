@@ -7,6 +7,7 @@ class AppError extends Error {
   constructor(status, message, details) { super(message); this.status = status; this.details = details; }
 }
 const DONE = ['Resolved', 'Closed'];
+const PUBLIC_IMAGE_URL = /^\/uploads\/[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}\.(?:jpg|png|webp)$/i;
 
 function validate(body) {
   const errors = [];
@@ -34,7 +35,10 @@ function view(c, now) {
   const basePriority = cfg.CATEGORIES[c.category].priority;
   const levels = ['Low', 'Medium', 'High', 'Critical'];
   const priority = levels[Math.min(levels.indexOf(basePriority) + Math.floor(voteCount / 5), levels.length - 1)];
-  return { ...rest, voteCount, priority, sla: sla(c, now) };
+  const images = Array.isArray(c.images)
+    ? c.images.filter((image) => image && typeof image.url === 'string' && PUBLIC_IMAGE_URL.test(image.url)).map(({ url }) => ({ url }))
+    : [];
+  return { ...rest, images, voteCount, priority, sla: sla(c, now) };
 }
 async function create(body) {
   const v = validate(body);

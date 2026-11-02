@@ -41,7 +41,7 @@ Change the seeded demo account credentials with `DEMO_ADMIN_EMAIL`, `DEMO_ADMIN_
 | POST /api/auth/login | Sign in; sets an HttpOnly session cookie | public |
 | POST /api/auth/logout | End the current session | signed in |
 | GET /api/auth/me | Current signed-in account | signed in |
-| POST /api/complaints | Create complaint (201) | resident |
+| POST /api/complaints | Create complaint (201); optionally include up to three JPG, PNG, or WebP photos as multipart `photos` fields | resident |
 | GET /api/complaints/:id | Track complaint | public |
 | GET /api/complaints/feed | Public issue feed and community stats | none |
 | POST /api/complaints/:id/vote | Add one vote per signed-in resident | resident |
@@ -52,7 +52,7 @@ Change the seeded demo account credentials with `DEMO_ADMIN_EMAIL`, `DEMO_ADMIN_
 | GET /api/health | Health | none |
 
 ## Implemented vs planned
-**Implemented:** public community feed with search and category filters, session-based resident signup/sign-in, password hashing, HttpOnly session cookies, role-checked APIs, resident voting/report submission, department-scoped staff access, admin account management, vote-driven priority escalation, complaint tracking, rule-based routing (`src/config.js`), SLA deadlines, status history, validation, JSON persistence, logging.
+**Implemented:** public community feed with search and category filters, uploaded complaint photos with responsive feed thumbnails and a lightbox, session-based resident signup/sign-in, password hashing, HttpOnly session cookies, role-checked APIs, resident voting/report submission, department-scoped staff access, admin account management, vote-driven priority escalation, complaint tracking, rule-based routing (`src/config.js`), SLA deadlines, status history, validation, JSON persistence, logging. Complaint photos are stored in `data/uploads/` and their public URLs are persisted with each complaint in `data/complaints.json`.
 **Not implemented (planned):** production identity provider, persistent/revocable sessions, database-backed storage, email verification and password recovery, scheduled escalation, duplicate detection, notifications, and production-grade abuse prevention.
 
 ## Known limitations
